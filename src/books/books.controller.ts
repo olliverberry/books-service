@@ -19,7 +19,7 @@ export class BooksController {
         if (book) {
             return book;
         }
-
+        
         throw new NotFoundException(`unable to find book with id: ${id}`);
     }
 }
