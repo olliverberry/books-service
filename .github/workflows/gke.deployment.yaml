@@ -40,7 +40,7 @@ jobs:
       run: |-
         helm repo add datadog https://helm.datadoghq.com
         helm repo update
-        helm install datadog-deployment -f ./datadog/gke-values.yaml \
+        helm upgrade datadog-deployment -f ./datadog/gke-values.yaml \
         --set datadog.apiKey=${{ secrets.DD_API_KEY }} \
         --set datadog.appKey=${{ secrets.DD_APP_KEY }} \
         --set datadog.clusterName=${{ env.GKE_CLUSTER }} \
@@ -50,7 +50,7 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
-        helm install books-deployment ./k8s/books-service \
+        helm upgrade books-deployment ./k8s/books-service \
         --set-string global.clusterName=${{ env.GKE_CLUSTER }} \
         --set-string global.env=dev \
         --set-string commit_sha=$GITHUB_SHA
