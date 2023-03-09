@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.service.name }}-deployment
+  labels:
+    chart_name: {{ .Chart.Name }}
+    chart_version: {{ .Chart.Version }}
+    service: {{ .Values.service.name }}
+    app: {{ .Values.service.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.service.name }}
+  template:
+    metadata:
+      name: {{ .Values.service.name }}
+      labels:
+        app: {{ .Values.service.name }}
+        chart_name: {{ .Chart.Name }}
+        service: {{ .Values.service.name }}
+      annotations:
+        ad.datadoghq.com/books-service.logs: |
+          [
+            {
+              "source": "nodejs",
+              "service": "books-service"
+            }
+          ]
+        ad.datadoghq.com/tags: |
+          {
+            "git.repository_url": "{{ $.Values.repository_url }}",
+            "git.commit.sha": "{{ $.Values.commit_sha }}"
+          }
+    spec:
+      containers:
+      - name: {{ .Values.service.name }}
+        image: "{{ $.Values.global.docker.registry }}:main"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        env:
+        - name: DD_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: DOGSTATSD_HOST_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+  
