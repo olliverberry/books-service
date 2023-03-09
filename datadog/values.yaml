@@ -1,0 +1,21 @@
+targetSystem: "linux"
+datadog:
+  apiKey: ""
+  appKey: ""
+  clusterName: ""
+  collectEvents: true
+  logs:
+    enabled: true
+    containerCollectAll: true 
+    containerCollectUsingFiles: true
+  apm:
+    portEnabled: true
+    socketPath: /var/run/datadog/apm.socket
+    hostSocketPath: /var/run/datadog/
+  processAgent:
+    enabled: true
+    processCollection: false
+  systemProbe:
+    enableTCPQueueLength: false
+    enableOOMKill: true
+    collectDNSStats: false
