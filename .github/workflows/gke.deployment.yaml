@@ -24,10 +24,11 @@ jobs:
         project_id: ${{ secrets.GKE_PROJECT }}
 
     # Get the GKE credentials so we can deploy to the cluster
-    - uses: google-github-actions/get-gke-credentials@fb08709ba27618c31c09e014e1d8364b02e5042e
+    - uses: google-github-actions/get-gke-credentials@v1
       with:
         cluster_name: ${{ env.GKE_CLUSTER }}
         credentials: ${{ secrets.GKE_SA_KEY }}
+        location: us-east1
 
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
