@@ -1,0 +1,31 @@
+global:
+  docker:
+    registry: ghcr.io/stuartcmehrens/books-service
+  clusterName: ""
+  env: ""
+
+commit_sha: ""
+repository_url: "github.com/stuartcmehrens/books-service"
+
+service:
+  name: books-service
+
+datadog:
+  datadog:
+    apiKey: ""
+    appKey: ""
+    tags: []
+    logs:
+      enabled: true
+      containerCollectAll: true
+    apm:
+      portEnabled: true
+      socketPath: /var/run/datadog/apm.socket
+      hostSocketPath: /var/run/datadog/
+    processAgent:
+      enabled: true
+      processCollection: true
+    systemProbe:
+      enableTCPQueueLength: false
+      enableOOMKill: true
+      collectDNSStats: false
