@@ -44,7 +44,7 @@ jobs:
         --set datadog.apiKey=${{ secrets.DD_API_KEY }} \
         --set datadog.appKey=${{ secrets.DD_APP_KEY }} \
         --set datadog.clusterName=${{ env.GKE_CLUSTER }} \
-        stable/datadog 
+        datadog/datadog
 
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
