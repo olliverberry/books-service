@@ -1,11 +1,6 @@
 name: Deploy to GKE
 
 on:
-  registry_package:
-    types:
-    - published
-    - updated
-  
   workflow_dispatch:
 
 env:
@@ -44,7 +39,6 @@ jobs:
         --set datadog.apiKey=${{ secrets.DD_API_KEY }} \
         --set datadog.appKey=${{ secrets.DD_APP_KEY }} \
         --set datadog.clusterName=${{ env.GKE_CLUSTER }} \
-        --version 3.10.0 \
         --install \
         datadog/datadog
 
@@ -52,7 +46,7 @@ jobs:
     - name: Deploy
       run: |-
         helm upgrade books-deployment ./k8s/books-service \
-        --set-string global.clusterName=${{ env.GKE_CLUSTER }} \
-        --set-string global.env=dev \
-        --set-string commit_sha=$GITHUB_SHA \
+        --set global.clusterName=${{ env.GKE_CLUSTER }} \
+        --set global.env=dev \
+        --set commit_sha=$GITHUB_SHA \
         --install
