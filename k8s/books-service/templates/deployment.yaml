@@ -19,7 +19,10 @@ spec:
         app: {{ .Values.service.name }}
         chart_name: {{ .Chart.Name }}
         service: {{ .Values.service.name }}
+        admission.datadoghq.com/enabled: true
+        admission.datadoghq.com/config.mode: socket
       annotations:
+        admission.datadoghq.com/js-lib.version: v3.15.0
         ad.datadoghq.com/books-service.logs: |
           [
             {
@@ -49,4 +52,6 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.hostIP
+        - name: DD_LOGS_INJECTION
+          value: true
   
