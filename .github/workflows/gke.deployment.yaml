@@ -45,6 +45,7 @@ jobs:
         --set datadog.appKey=${{ secrets.DD_APP_KEY }} \
         --set datadog.clusterName=${{ env.GKE_CLUSTER }} \
         --version 3.10.0 \
+        --install \
         datadog/datadog
 
     # Deploy the Docker image to the GKE cluster
@@ -53,4 +54,5 @@ jobs:
         helm upgrade books-deployment ./k8s/books-service \
         --set-string global.clusterName=${{ env.GKE_CLUSTER }} \
         --set-string global.env=dev \
-        --set-string commit_sha=$GITHUB_SHA
+        --set-string commit_sha=$GITHUB_SHA \
+        --install
