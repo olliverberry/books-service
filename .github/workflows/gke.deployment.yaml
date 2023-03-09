@@ -44,7 +44,7 @@ jobs:
         --set datadog.site='datadoghq.com' \
         --set datadog.apiKey=${{ secrets.DD_API_KEY }} \
         --set datadog.appKey=${{ secrets.DD_APP_KEY }} \
-        --set datadog.clusterName=${{ env.GKE_CLUSTER }}
+        --set datadog.clusterName=${{ env.GKE_CLUSTER }} \
         datadog/datadog 
 
     # Deploy the Docker image to the GKE cluster
