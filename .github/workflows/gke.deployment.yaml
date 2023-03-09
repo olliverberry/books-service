@@ -35,7 +35,7 @@ jobs:
       run: |-
         helm repo add datadog https://helm.datadoghq.com
         helm repo update
-        helm upgrade datadog-deployment -f ./datadog/gke-values.yaml \
+        helm upgrade datadog-monitor -f ./datadog/gke-values.yaml \
         --set datadog.apiKey=${{ secrets.DD_API_KEY }} \
         --set datadog.appKey=${{ secrets.DD_APP_KEY }} \
         --set datadog.clusterName=${{ env.GKE_CLUSTER }} \
