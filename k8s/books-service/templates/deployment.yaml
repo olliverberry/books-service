@@ -19,7 +19,7 @@ spec:
         app: {{ .Values.service.name }}
         chart_name: {{ .Chart.Name }}
         service: {{ .Values.service.name }}
-        admission.datadoghq.com/enabled: true
+        admission.datadoghq.com/enabled: "true"
         admission.datadoghq.com/config.mode: socket
       annotations:
         admission.datadoghq.com/js-lib.version: v3.15.0
