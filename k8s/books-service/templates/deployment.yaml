@@ -53,5 +53,5 @@ spec:
             fieldRef:
               fieldPath: status.hostIP
         - name: DD_LOGS_INJECTION
-          value: true
+          value: "true"
   
