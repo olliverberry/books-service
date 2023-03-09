@@ -2,7 +2,11 @@ name: Deploy to GKE
 
 on:
   registry_package:
-    types: [published]
+    types:
+    - published
+    - updated
+  
+  workflow_dispatch:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
