@@ -3,10 +3,6 @@ datadog:
   appKey: ""
   clusterName: ""
 
-  logs:
-    enabled: true
-    containerCollectAll: true
-
   # Enable the new `kubernetes_state_core` check.
   kubeStateMetricsCore:
     enabled: true
