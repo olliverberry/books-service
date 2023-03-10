@@ -31,17 +31,6 @@ jobs:
         cluster_name: ${{ env.GKE_CLUSTER }}
         location: us-east1
 
-    - name: 'Deploy Datadog'
-      run: |-
-        helm repo add datadog https://helm.datadoghq.com
-        helm repo update
-        helm upgrade datadog-monitor -f ./datadog/gke-values.yaml \
-        --set datadog.apiKey=${{ secrets.DD_API_KEY }} \
-        --set datadog.appKey=${{ secrets.DD_APP_KEY }} \
-        --set datadog.clusterName=${{ env.GKE_CLUSTER }} \
-        --install \
-        datadog/datadog
-
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
