@@ -1,11 +1,6 @@
 name: Deploy to GKE
 
 on:
-  registry_package:
-    types:
-    - published
-    - updated
-  
   workflow_dispatch:
 
 env:
@@ -21,25 +16,26 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    # Setup gcloud CLI
-    - uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
       with:
-        service_account_key: ${{ secrets.GKE_SA_KEY }}
-        project_id: ${{ secrets.GKE_PROJECT }}
+        credentials_json: '${{ secrets.GKE_SA_KEY }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v1'
 
     # Get the GKE credentials so we can deploy to the cluster
-    - uses: google-github-actions/get-gke-credentials@fb08709ba27618c31c09e014e1d8364b02e5042e
+    - uses: google-github-actions/get-gke-credentials@v1
       with:
         cluster_name: ${{ env.GKE_CLUSTER }}
-        credentials: ${{ secrets.GKE_SA_KEY }}
+        location: us-east1
 
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
-        helm dependency update ./k8s/books-service
-        helm install books-deployment ./k8s/books-service \
-        --set-string datadog.datadog.apiKey=${{ secrets.DD_API_KEY }} \
-        --set-string datadog.datadog.appKey=${{ secrets.DD_APP_KEY }} \
-        --set-string global.clusterName=${{ env.GKE_CLUSTER }} \
-        --set-string global.env=dev \
-        --set-string commit_sha=$GITHUB_SHA
+        helm upgrade books-deployment ./k8s/books-service \
+        --set global.clusterName=${{ env.GKE_CLUSTER }} \
+        --set global.env=dev \
+        --set commit_sha=$GITHUB_SHA \
+        --install
