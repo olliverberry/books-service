@@ -43,5 +43,5 @@ jobs:
         ./deploy.sh
       env:
         ENV: ${{ vars.ENV }}
-        VERSION: ${{ GITHUB_SHA }}
-        SHA: ${{ GITHUB_SHA }}
+        VERSION: ${{ github.sha }}
+        SHA: ${{ github.sha }}
