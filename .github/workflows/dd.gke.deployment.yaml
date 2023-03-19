@@ -1,19 +1,12 @@
-name: Deploy to GKE
+name: Deploy Datadog to GKE
 
 on:
-  workflow_run:
-    workflows: [ "Publish container image to Github" ]
-    types: [ completed ]
-    branches:
-    - main
   workflow_dispatch:
 
 jobs:
   deployment:
     runs-on: ubuntu-latest
     environment: gke-prod
-
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
     - name: Checkout
@@ -38,9 +31,9 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
-        chmod +x $GITHUB_WORKSPACE/k8s/deploy.sh
-        $GITHUB_WORKSPACE/k8s/deploy.sh
+        chmod +x $GITHUB_WORKSPACE/datadog/deploy.sh
+        $GITHUB_WORKSPACE/datadog/deploy.sh
       env:
-        ENV: ${{ vars.ENV }}
-        VERSION: $GITHUB_SHA
-        SHA: $GITHUB_SHA
+        DATADOG_API_KEY: ${{ secrets.DD_API_KEY }}
+        DATADOG_APP_KEY: ${{ secrets.DD_APP_KEY }}
+        CLUSTER_NAME: ${{ vars.GKE_CLUSTER }}
