@@ -33,7 +33,7 @@ jobs:
       run: |-
         cd $GITHUB_WORKSPACE/datadog
         chmod +x ./deploy.sh
-        $GITHUB_WORKSPACE/datadog/deploy.sh
+        ./deploy.sh
       env:
         DATADOG_API_KEY: ${{ secrets.DD_API_KEY }}
         DATADOG_APP_KEY: ${{ secrets.DD_APP_KEY }}

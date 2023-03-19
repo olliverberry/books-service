@@ -1,7 +1,7 @@
 datadog:
-  apiKey: ${DATADOG_API_KEY}
-  appKey: ${DATADOG_APP_KEY}
-  clusterName: ${CLUSTER_NAME}
+  apiKey: ""
+  appKey: ""
+  clusterName: ""
 
   # Enable the new `kubernetes_state_core` check.
   kubeStateMetricsCore:
