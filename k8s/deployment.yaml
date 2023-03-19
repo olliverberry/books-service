@@ -19,6 +19,11 @@ spec:
       labels:
         app: books-service
         service: books-service
+        tags.datadoghq.com/env: ${ENV}
+        tags.datadoghq.com/service: books-service
+        tags.datadoghq.com/version: ${VERSION}
+        admission.datadoghq.com/enabled: "true"
+        admission.datadoghq.com/config.mode: "socket"
       annotations:
         ad.datadoghq.com/books-service.logs: |
           [
@@ -32,6 +37,7 @@ spec:
             "git.repository_url": "github.com/stuartcmehrens/books-service",
             "git.commit.sha": "${SHA}"
           }
+        admission.datadoghq.com/js-lib.version: v3.15.0
     spec:
       containers:
       - name: books-service
