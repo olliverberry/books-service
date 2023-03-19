@@ -38,9 +38,10 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
-        chmod +x $GITHUB_WORKSPACE/k8s/deploy.sh
-        $GITHUB_WORKSPACE/k8s/deploy.sh
+        cd $GITHUB_WORKSPACE/k8s
+        chmod +x ./deploy.sh
+        ./deploy.sh
       env:
         ENV: ${{ vars.ENV }}
-        VERSION: $GITHUB_SHA
-        SHA: $GITHUB_SHA
+        VERSION: ${{ GITHUB_SHA }}
+        SHA: ${{ GITHUB_SHA }}

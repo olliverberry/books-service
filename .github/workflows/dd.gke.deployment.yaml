@@ -31,7 +31,8 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
-        chmod +x $GITHUB_WORKSPACE/datadog/deploy.sh
+        cd $GITHUB_WORKSPACE/datadog
+        chmod +x ./deploy.sh
         $GITHUB_WORKSPACE/datadog/deploy.sh
       env:
         DATADOG_API_KEY: ${{ secrets.DD_API_KEY }}
