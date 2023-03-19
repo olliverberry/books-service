@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.service.name }}-deployment
+  name: books-service-deployment
   labels:
-    chart_name: {{ .Chart.Name }}
-    chart_version: {{ .Chart.Version }}
-    service: {{ .Values.service.name }}
-    app: {{ .Values.service.name }}
+    service: books-service
+    app: books-service
+    tags.datadoghq.com/env: ${ENV}
+    tags.datadoghq.com/service: books-service
+    tags.datadoghq.com/version: ${VERSION}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.service.name }}
+      app: books-service
   template:
     metadata:
-      name: {{ .Values.service.name }}
+      name: books-service
       labels:
-        app: {{ .Values.service.name }}
-        chart_name: {{ .Chart.Name }}
-        service: {{ .Values.service.name }}
+        app: books-service
+        service: books-service
       annotations:
         ad.datadoghq.com/books-service.logs: |
           [
@@ -29,14 +29,13 @@ spec:
           ]
         ad.datadoghq.com/tags: |
           {
-            "git.repository_url": "{{ $.Values.repository_url }}",
-            "git.commit.sha": "{{ $.Values.commit_sha }}"
+            "git.repository_url": "github.com/stuartcmehrens/books-service",
+            "git.commit.sha": "${SHA}"
           }
     spec:
       containers:
-      - name: {{ .Values.service.name }}
-        image: "{{ $.Values.global.docker.registry }}:main"
-        imagePullPolicy: IfNotPresent
+      - name: books-service
+        image: "ghcr.io/stuartcmehrens/books-service"
         ports:
         - containerPort: 3000
           protocol: TCP
@@ -51,4 +50,3 @@ spec:
               fieldPath: status.hostIP
         - name: DD_LOGS_INJECTION
           value: "true"
-  

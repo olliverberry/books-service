@@ -1,0 +1,70 @@
+datadog:
+  apiKey: ${DATADOG_API_KEY}
+  appKey: ${DATADOG_APP_KEY}
+  clusterName: ${CLUSTER_NAME}
+
+  # Enable the new `kubernetes_state_core` check.
+  kubeStateMetricsCore:
+    enabled: true
+  # Avoid deploying kube-state-metrics chart.
+  # The new `kubernetes_state_core` doesn't require to deploy the kube-state-metrics anymore.
+  kubeStateMetricsEnabled: false
+  
+  # enable apm via TCP
+  apm:
+    portEnabled: true
+    socketEnabled: false
+  
+  # enable logs
+  logs:
+    enabled: true
+    containerCollectAll: true
+
+  # enable live containers
+  processAgent:
+    enabled: true
+
+  # enabled event collection
+  collectEvents: true
+
+clusterAgent:
+
+  # needed for event collection via the cluster agent
+  rbac:
+    create: true
+
+agents:
+  containers:
+    agent:
+      # resources for the Agent container
+      resources:
+        requests:
+          cpu: 200m
+          memory: 256Mi
+        limits:
+          cpu: 200m
+          memory: 256Mi
+
+    traceAgent:
+      # resources for the Trace Agent container
+      resources:
+        requests:
+          cpu: 100m
+          memory: 200Mi
+        limits:
+          cpu: 100m
+          memory: 200Mi
+
+    processAgent:
+      # resources for the Process Agent container
+      resources:
+        requests:
+          cpu: 100m
+          memory: 200Mi
+        limits:
+          cpu: 100m
+          memory: 200Mi
+
+providers:
+  gke:
+    autopilot: true
