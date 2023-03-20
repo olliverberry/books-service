@@ -11,7 +11,9 @@ export class LoggerMiddleware implements NestMiddleware {
       params: req.params,
       message: 'incoming request.',
     }, LoggerMiddleware.name);
+    
     next();
+
     this.logger.debug({
       statusCode: res.statusCode,
       path: req.path,

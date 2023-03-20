@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { Logger, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { BooksController } from './books.controller';
 import { BooksService } from './books.service';
@@ -12,7 +12,7 @@ describe('BooksController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [BooksController],
-      providers: [BooksService],
+      providers: [BooksService, Logger],
     }).compile();
 
     booksController = module.get<BooksController>(BooksController);
