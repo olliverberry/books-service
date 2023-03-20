@@ -3,7 +3,7 @@ import { BooksService } from './books.service';
 import { BooksController } from './books.controller';
 
 @Module({
-  providers: [BooksService, Logger,],
+  providers: [BooksService, Logger],
   controllers: [BooksController],
 })
 export class BooksModule {}
