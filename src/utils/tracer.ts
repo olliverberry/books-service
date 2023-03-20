@@ -1,4 +1,13 @@
-import { tracer } from 'dd-trace';
+import { tracer, TracerOptions } from 'dd-trace';
 
-tracer.init();
+const tracerOps: TracerOptions = {
+  spanSamplingRules: [
+    {
+      sampleRate: 0,
+      name: 'books',
+    },
+  ],
+};
+
+tracer.init(tracerOps);
 export default tracer;
