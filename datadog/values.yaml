@@ -27,10 +27,6 @@ datadog:
   # enabled event collection
   collectEvents: true
 
-  # enable universal service monitoring
-  serviceMonitoring:
-    enabled: true
-
 clusterAgent:
 
   # needed for event collection via the cluster agent
