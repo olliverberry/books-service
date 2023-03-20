@@ -19,10 +19,10 @@ describe('BooksController', () => {
     booksService = module.get<BooksService>(BooksService);
     books = [
       {
-        id: "testId",
-        author: "testAuthor",
-        category: "testCategory",
-        title: "testTitle",
+        id: 'testId',
+        author: 'testAuthor',
+        category: 'testCategory',
+        title: 'testTitle',
       },
     ];
   });
@@ -30,22 +30,28 @@ describe('BooksController', () => {
   describe('getBooks', () => {
     it('should return an array of books', async () => {
       jest.spyOn(booksService, 'getBooks').mockImplementation(() => books);
-      
+
       expect(booksController.getBooks()).resolves.toBe(books);
     });
   });
 
   describe('getBook', () => {
     it('should return a book', async () => {
-      jest.spyOn(booksService, 'getBook').mockImplementation(id => books.find(book => book.id === id));
-      
+      jest
+        .spyOn(booksService, 'getBook')
+        .mockImplementation((id) => books.find((book) => book.id === id));
+
       expect(booksController.getBook('testId')).resolves.toBe(books[0]);
     });
 
     it('should throw not found', async () => {
-      jest.spyOn(booksService, 'getBook').mockImplementation(id => books.find(book => book.id === id));
+      jest
+        .spyOn(booksService, 'getBook')
+        .mockImplementation((id) => books.find((book) => book.id === id));
 
-      expect(booksController.getBook('idDoesNotExist')).rejects.toThrow(new NotFoundException(`unable to find book with id: idDoesNotExist`));
-    })
+      expect(booksController.getBook('idDoesNotExist')).rejects.toThrow(
+        new NotFoundException(`unable to find book with id: idDoesNotExist`),
+      );
+    });
   });
 });
