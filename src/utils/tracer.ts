@@ -1,13 +1,7 @@
-import { tracer, TracerOptions } from 'dd-trace';
+import { tracer } from 'dd-trace';
 
-const tracerOpts: TracerOptions = {
-  samplingRules: [
-    {
-        sampleRate: 0,
-        name: /(books)(\/*)/
-    }
-  ],
-};
-
-tracer.init(tracerOpts);
+tracer.init();
+tracer.use('express', {
+  blocklist: [/books\/.{1,}/]
+});
 export default tracer;
