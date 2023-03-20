@@ -4,7 +4,7 @@ const tracerOpts: TracerOptions = {
   samplingRules: [
     {
         sampleRate: 0,
-        name: 'books'
+        name: 'GET /api/books/'
     }
   ],
 };
