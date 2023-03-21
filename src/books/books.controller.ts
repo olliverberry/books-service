@@ -5,6 +5,7 @@ import {
   NotFoundException,
   Param,
 } from '@nestjs/common';
+import tracer from '../utils/tracer';
 import { BooksService } from './books.service';
 import { Book } from './interfaces/book.interface';
 
@@ -17,11 +18,13 @@ export class BooksController {
 
   @Get()
   async getBooks(): Promise<Book[]> {
+    tracer.scope().active().setOperationName('books');
     return this.booksService.getBooks();
   }
 
   @Get(':id')
   async getBook(@Param('id') id: string): Promise<Book> {
+    tracer.scope().active().setOperationName('books');
     const book = this.booksService.getBook(id);
     if (book) {
       return book;
