@@ -5,7 +5,7 @@ import {
   NotFoundException,
   Param,
 } from '@nestjs/common';
-import tracer from 'src/utils/tracer';
+import tracer from '../utils/tracer';
 import { BooksService } from './books.service';
 import { Book } from './interfaces/book.interface';
 
