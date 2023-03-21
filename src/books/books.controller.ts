@@ -18,13 +18,11 @@ export class BooksController {
 
   @Get()
   async getBooks(): Promise<Book[]> {
-    tracer.scope().active().setOperationName('books');
     return this.booksService.getBooks();
   }
 
   @Get(':id')
   async getBook(@Param('id') id: string): Promise<Book> {
-    tracer.scope().active().setOperationName('books');
     const book = this.booksService.getBook(id);
     if (book) {
       return book;
