@@ -23,6 +23,7 @@ datadog:
   # enable live containers
   processAgent:
     enabled: true
+    processCollection: true
 
   # enabled event collection
   collectEvents: true
