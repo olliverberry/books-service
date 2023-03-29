@@ -1,11 +1,6 @@
 name: Deploy to GKE
 
 on:
-  workflow_run:
-    workflows: [ "Publish container image to Github" ]
-    types: [ completed ]
-    branches:
-    - main
   workflow_dispatch:
 
 jobs:
