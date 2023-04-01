@@ -1,19 +1,13 @@
 name: Deploy to GKE
 
 on:
-  workflow_run:
-    workflows: [ "Publish container image to Github" ]
-    types: [ completed ]
-    branches:
-    - main
   workflow_dispatch:
 
 jobs:
   deployment:
     runs-on: ubuntu-latest
     environment: gke-prod
-
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    needs: gcloud_setup
 
     steps:
     - name: Checkout
@@ -21,27 +15,26 @@ jobs:
 
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v1'
+      uses: google-github-actions/auth@v1
       with:
         credentials_json: '${{ secrets.GKE_SA_KEY }}'
 
-    - name: 'Set up Cloud SDK'
-      uses: 'google-github-actions/setup-gcloud@v1'
-
-    # Get the GKE credentials so we can deploy to the cluster
-    - name: 'Get cluster credentials'
+    - id: 'get_cluster_credentials'
+      name: 'Get Cluster Credentials'
       uses: google-github-actions/get-gke-credentials@v1
       with:
         cluster_name: ${{ secrets.GKE_CLUSTER }}
-        location: us-east1
+        location: ${{ vars.GKE_REGION }}
 
-    # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
-        cd $GITHUB_WORKSPACE/k8s
-        chmod +x ./deploy.sh
-        ./deploy.sh
+        chmod +x .gcp/gke/deploy.sh
+        .gcp/gke/deploy.sh
       env:
         ENV: ${{ vars.ENV }}
         VERSION: ${{ github.sha }}
         SHA: ${{ github.sha }}
+        SERVICE_FILE_PATH: ./.gcp/gke/service.yaml
+        DEPLOYMENT_FILE_PATH: ./.gcp/gke/deployment.yaml
+        KUBECONFIG: ${{ needs.gcloud_setup.outputs.kubeconfig }}
+        PORT: 3000

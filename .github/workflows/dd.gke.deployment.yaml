@@ -7,34 +7,30 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     environment: gke-prod
-
     steps:
     - name: Checkout
       uses: actions/checkout@v3
 
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v1'
+      uses: google-github-actions/auth@v1
       with:
         credentials_json: '${{ secrets.GKE_SA_KEY }}'
 
-    - name: 'Set up Cloud SDK'
-      uses: 'google-github-actions/setup-gcloud@v1'
-
-    # Get the GKE credentials so we can deploy to the cluster
-    - name: 'Get cluster credentials'
+    - id: 'get_cluster_credentials'
+      name: 'Get Cluster Credentials'
       uses: google-github-actions/get-gke-credentials@v1
       with:
         cluster_name: ${{ secrets.GKE_CLUSTER }}
-        location: us-east1
+        location: ${{ vars.GKE_REGION }}
 
-    # Deploy the Docker image to the GKE cluster
-    - name: Deploy
+    - id: 'deploy_datadog'
+      name: 'Deploy Datadog'
       run: |-
-        cd $GITHUB_WORKSPACE/datadog
-        chmod +x ./deploy.sh
-        ./deploy.sh
+        chmod +x .datadog/deploy.sh
+        .datadog/deploy.sh
       env:
         DATADOG_API_KEY: ${{ secrets.DD_API_KEY }}
         DATADOG_APP_KEY: ${{ secrets.DD_APP_KEY }}
         CLUSTER_NAME: ${{ secrets.GKE_CLUSTER }}
+        VALUES_FILE_PATH: .datadog/gke/values.yaml

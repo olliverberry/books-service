@@ -20,20 +20,20 @@ export class LoggingInterceptor implements NestInterceptor {
     const { method, path, params } = httpContext.getRequest<Request>();
 
     // this seems janky
-    httpContext.getResponse<Response>()
-      .addListener('close', () => {
-        this.logger.verbose({
-          controller,
-          action,
-          method,
-          path,
-          params,
-          message: 'serving response.',
-          statusCode: httpContext.getResponse<Response>().statusCode,
-        });
+    httpContext.getResponse<Response>().addListener('close', () => {
+      this.logger.debug({
+        controller,
+        action,
+        method,
+        path,
+        params,
+        message: 'serving response.',
+        statusCode: httpContext.getResponse<Response>().statusCode,
       });
+    });
 
-    this.logger.debug({
+    this.logger.debug(
+      {
         controller,
         action,
         method,
@@ -43,17 +43,15 @@ export class LoggingInterceptor implements NestInterceptor {
       },
       LoggingInterceptor.name,
     );
-    
-    return next
-      .handle()
-      .pipe(
-        tap({
-          error: err => {
-            this.logger.error({
-              err,
-            });
-          },
-        })
-      );
+
+    return next.handle().pipe(
+      tap({
+        error: (err) => {
+          this.logger.error({
+            err,
+          });
+        },
+      }),
+    );
   }
 }
