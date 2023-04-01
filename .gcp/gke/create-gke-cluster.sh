@@ -4,7 +4,7 @@
 gcloud config set disable_prompts true
 gcloud config set core/verbosity error
 
-EXISTING_SA="\"$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com\""
+EXISTING_SA="$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com"
 
 # check to see if service account exists; if not create it
 output=$(gcloud iam service-accounts list \
