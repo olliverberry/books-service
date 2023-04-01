@@ -31,5 +31,5 @@ jobs:
         SA_NAME: ${{ vars.GKE_SA_NAME }}
         PROJECT_ID: ${{ secrets.GKE_PROJECT }}
         CLUSTER_NAME: ${{ secrets.GKE_CLUSTER }}
-        REGION: ${{ vars.GCP_GKE_REGION }}
+        REGION: ${{ vars.GKE_REGION }}
     
