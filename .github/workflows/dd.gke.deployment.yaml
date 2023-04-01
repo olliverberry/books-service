@@ -3,36 +3,34 @@ name: Deploy Datadog to GKE
 on:
   workflow_dispatch:
 
-env:
-  GITHUB_ENVIRONMENT: 'gke-prod'
-  CLUSTER_REGION: 'us-east1'
-
 jobs:
-  gcloud_setup:
-    uses: ./.github/workflows/gke.authenticate.yaml
-    with:
-      cluster_region: ${{ env.CLUSTER_REGION }}
-      github_environment: ${{ env.GITHUB_ENVIRONMENT }}
-    secrets:
-      cluster_name: ${{ secrets.GKE_CLUSTER }}
-      sa_key: ${{ secrets.GKE_SA_KEY }}
-
   deployment:
     runs-on: ubuntu-latest
     environment: gke-prod
-    needs: gcloud_setup
-
     steps:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Deploy
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: '${{ secrets.GKE_SA_KEY }}'
+
+    - id: 'get_cluster_credentials'
+      name: 'Get Cluster Credentials'
+      uses: google-github-actions/get-gke-credentials@v1
+      with:
+        cluster_name: ${{ secrets.GKE_CLUSTER }}
+        location: ${{ vars.GKE_REGION }}
+
+    - id: 'deploy_datadog'
+      name: 'Deploy Datadog'
       run: |-
-        chmod +x ./.datadog/deploy.sh
-        ./.datadog/deploy.sh
+        chmod +x .datadog/deploy.sh
+        .datadog/deploy.sh
       env:
         DATADOG_API_KEY: ${{ secrets.DD_API_KEY }}
         DATADOG_APP_KEY: ${{ secrets.DD_APP_KEY }}
         CLUSTER_NAME: ${{ secrets.GKE_CLUSTER }}
-        VALUES_FILE_PATH: ./.datadog/gke/values.yaml
-        KUBECONFIG: ${{ needs.gcloud_setup.outputs.kubeconfig }}
+        VALUES_FILE_PATH: .datadog/gke/values.yaml
