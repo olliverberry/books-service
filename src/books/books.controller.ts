@@ -1,19 +1,16 @@
 import {
   Controller,
   Get,
-  Logger,
   NotFoundException,
   Param,
 } from '@nestjs/common';
-import tracer from '../utils/tracer';
 import { BooksService } from './books.service';
 import { Book } from './interfaces/book.interface';
 
 @Controller('api/books')
 export class BooksController {
   constructor(
-    private readonly booksService: BooksService,
-    private readonly logger: Logger,
+    private readonly booksService: BooksService
   ) {}
 
   @Get()

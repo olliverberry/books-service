@@ -40,9 +40,11 @@ spec:
       - name: books-service
         image: "ghcr.io/stuartcmehrens/books-service"
         ports:
-        - containerPort: 3000
+        - containerPort: ${PORT}
           protocol: TCP
         env:
+        - name: PORT
+          value: ${PORT}
         - name: DD_AGENT_HOST
           valueFrom:
             fieldRef:

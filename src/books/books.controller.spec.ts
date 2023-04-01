@@ -39,7 +39,7 @@ describe('BooksController', () => {
     it('should return a book', async () => {
       jest
         .spyOn(booksService, 'getBook')
-        .mockImplementation((id) => books.find((book) => book.id === id));
+        .mockImplementation((id) => books.find((book) => book.id == id));
 
       expect(booksController.getBook('testId')).resolves.toBe(books[0]);
     });
@@ -47,7 +47,7 @@ describe('BooksController', () => {
     it('should throw not found', async () => {
       jest
         .spyOn(booksService, 'getBook')
-        .mockImplementation((id) => books.find((book) => book.id === id));
+        .mockImplementation((id) => books.find((book) => book.id == id));
 
       expect(booksController.getBook('idDoesNotExist')).rejects.toThrow(
         new NotFoundException(`unable to find book with id: idDoesNotExist`),

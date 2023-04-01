@@ -1,0 +1,40 @@
+name: Deploy to GKE
+
+on:
+  workflow_dispatch:
+
+env:
+  GITHUB_ENVIRONMENT: 'gke-prod'
+  CLUSTER_REGION: 'us-east1'
+
+jobs:
+  gcloud_setup:
+    uses: ./.github/workflows/gke.authenticate.yaml
+    with:
+      cluster_region: ${{ env.CLUSTER_REGION }}
+      github_environment: ${{ env.GITHUB_ENVIRONMENT }}
+    secrets:
+      cluster_name: ${{ secrets.GKE_CLUSTER }}
+      sa_key: ${{ secrets.GKE_SA_KEY }}
+
+  deployment:
+    runs-on: ubuntu-latest
+    environment: gke-prod
+    needs: gcloud_setup
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Deploy
+      run: |-
+        chmod +x ./.gcp/gke/deploy.sh
+        ./.gcp/gke/deploy.sh
+      env:
+        ENV: ${{ vars.ENV }}
+        VERSION: ${{ github.sha }}
+        SHA: ${{ github.sha }}
+        SERVICE_FILE_PATH: ./.gcp/gke/service.yaml
+        DEPLOYMENT_FILE_PATH: ./.gcp/gke/deployment.yaml
+        KUBECONFIG: ${{ needs.gcloud_setup.outputs.kubeconfig }}
+        PORT: 3000

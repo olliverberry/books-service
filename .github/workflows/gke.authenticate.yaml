@@ -1,0 +1,48 @@
+name: Setup GCloud SDK and Authenticate with Cluster
+
+on:
+  workflow_call:
+    outputs:
+      kubeconfig:
+        description: 'kubeconfig path'
+        value: ${{ jobs.setup_and_authenticate.outputs.kubeconfig }}
+    inputs:
+      cluster_region:
+        required: true
+        type: string
+      github_environment:
+        required: true
+        type: string
+    secrets:
+      cluster_name:
+        required: true
+      sa_key:
+        required: true
+
+jobs:
+  setup_and_authenticate:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.github_environment }}
+    outputs:
+      kubeconfig: ${{ steps.output_kube_config.outputs.kubeconfig }}
+    steps:
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: '${{ secrets.sa_key }}'
+
+    - id: 'setup_sdk'
+      name: 'Set up Cloud SDK'
+      uses: google-github-actions/setup-gcloud@v1
+
+    - id: 'get_cluster_credentials'
+      name: 'Get Cluster Credentials'
+      uses: google-github-actions/get-gke-credentials@v1
+      with:
+        cluster_name: ${{ secrets.cluster_name }}
+        location: ${{ inputs.cluster_region }}
+    
+    - id: 'output_kube_config'
+      name: 'Output Kubeconfig'
+      run: echo "kubeconfig=$KUBECONFIG" >> $GITHUB_OUTPUT
