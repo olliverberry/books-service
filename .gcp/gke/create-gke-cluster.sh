@@ -34,6 +34,7 @@ then
     echo "creating cluster $CLUSTER_NAME"
     gcloud container clusters create-auto $CLUSTER_NAME \
         --project $PROJECT_ID \
+        --region $REGION \
         --service-account "$EXISTING_SA"
 fi
     
