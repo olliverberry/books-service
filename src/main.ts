@@ -1,4 +1,3 @@
-import './utils/tracer';
 import { NestFactory } from '@nestjs/core';
 import { WinstonModule } from 'nest-winston';
 import { AppModule } from './app.module';
