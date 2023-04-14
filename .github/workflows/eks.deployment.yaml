@@ -25,9 +25,9 @@ jobs:
         chmod +x .aws/eks/deploy.sh
         .aws/eks/deploy.sh
       env:
-        ENV: ${{ vars.ENV }}
+        ENV: ${{ vars.DD_ENV }}
         VERSION: ${{ github.sha }}
         SHA: ${{ github.sha }}
-        SERVICE_FILE_PATH: ./.aws/eks/service.yaml
-        DEPLOYMENT_FILE_PATH: ./.aws/eks/deployment.yaml
+        SERVICE_FILE_PATH: .aws/eks/service.yaml
+        DEPLOYMENT_FILE_PATH: .aws/eks/deployment.yaml
         PORT: 3000
