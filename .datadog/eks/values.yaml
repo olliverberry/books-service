@@ -1,0 +1,38 @@
+datadog:
+  apiKey: ""
+  appKey: ""
+  clusterName: ""
+
+  # Enable the new `kubernetes_state_core` check.
+  kubeStateMetricsCore:
+    enabled: true
+  # Avoid deploying kube-state-metrics chart.
+  # The new `kubernetes_state_core` doesn't require to deploy the kube-state-metrics anymore.
+  kubeStateMetricsEnabled: false
+  
+  # enable apm
+  apm:
+    socketEnabled: true
+  
+  # enable logs
+  logs:
+    enabled: true
+    containerCollectAll: true
+
+  # enable live containers
+  processAgent:
+    enabled: true
+    processCollection: true
+
+  # enabled event collection
+  collectEvents: true
+
+clusterAgent:
+
+  # needed for event collection via the cluster agent
+  rbac:
+    create: true
+  
+  admissionController:
+    enabled: true
+    mutateUnlabelled: false

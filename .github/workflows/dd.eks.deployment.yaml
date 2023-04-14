@@ -1,0 +1,31 @@
+name: Deploy Datadog to GKE
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    environment: eks-prod
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ vars.AWS_REGION }}
+
+    - id: 'deploy_datadog'
+      name: 'Deploy Datadog'
+      run: |-
+        aws eks --region ${{ vars.AWS_REGION }} update-kubeconfig --name ${{ vars.CLUSTER_NAME }}
+        chmod +x .datadog/deploy.sh
+        .datadog/deploy.sh
+      env:
+        DATADOG_API_KEY: ${{ secrets.DD_API_KEY }}
+        DATADOG_APP_KEY: ${{ secrets.DD_APP_KEY }}
+        CLUSTER_NAME: ${{ vars.CLUSTER_NAME }}
+        VALUES_FILE_PATH: .datadog/eks/values.yaml

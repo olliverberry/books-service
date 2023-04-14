@@ -1,0 +1,33 @@
+name: Deploy to EKS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    environment: eks-prod
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ vars.AWS_REGION }}
+
+    - name: Deploy
+      run: |-
+        aws eks --region ${{ vars.AWS_REGION }} update-kubeconfig --name ${{ vars.CLUSTER_NAME }}
+        chmod +x .aws/eks/deploy.sh
+        .aws/eks/deploy.sh
+      env:
+        ENV: ${{ vars.ENV }}
+        VERSION: ${{ github.sha }}
+        SHA: ${{ github.sha }}
+        SERVICE_FILE_PATH: ./.aws/eks/service.yaml
+        DEPLOYMENT_FILE_PATH: ./.aws/eks/deployment.yaml
+        PORT: 3000
