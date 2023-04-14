@@ -1,4 +1,4 @@
-name: Deploy Datadog to GKE
+name: Deploy Datadog to EKS
 
 on:
   workflow_dispatch:
