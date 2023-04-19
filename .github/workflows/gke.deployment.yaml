@@ -7,7 +7,6 @@ jobs:
   deployment:
     runs-on: ubuntu-latest
     environment: gke-prod
-    needs: gcloud_setup
 
     steps:
     - name: Checkout
