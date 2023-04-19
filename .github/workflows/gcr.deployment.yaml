@@ -1,0 +1,39 @@
+name: Deploy to Google Cloud Run
+
+on:
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+permissions:
+  contents: 'read'
+  id-token: 'write'
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    environment: gcr-prod
+
+    steps:
+    - id: auth
+      name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        workload_identity_provider: projects/583396614925/locations/global/workloadIdentityPools/github-actions-identity-pool
+        service_account: github-actions-sa@datadog-sandbox-384117.iam.gserviceaccount.com
+
+    - id: deploy
+      uses: google-github-actions/deploy-cloudrun@v1
+      with:
+        service: books-service
+        image: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:gcr'
+        env_vars: |
+          DD_ENV: ${{ vars.DD_ENV }}
+          DD_SERVICE: books-service
+          DD_VERSION: ${{ env.GITHUB_SHA }}
+          DD_API_KEY: ${{ secrets.DD_API_KEY }}
+          DD_TRACE_ENABLED: true
+          DD_LOGS_ENABLED: true
+          
