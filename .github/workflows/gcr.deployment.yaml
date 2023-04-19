@@ -40,4 +40,5 @@ jobs:
           DD_TRACE_ENABLED=true
           DD_LOGS_ENABLED=true
           DD_SOURCE=nodejs
+          DD_LOGS_INJECTION=true
           
