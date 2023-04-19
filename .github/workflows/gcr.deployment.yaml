@@ -39,4 +39,5 @@ jobs:
           DD_API_KEY=${{ secrets.DD_API_KEY }}
           DD_TRACE_ENABLED=true
           DD_LOGS_ENABLED=true
+          DD_SOURCE=nodejs
           
