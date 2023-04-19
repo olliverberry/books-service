@@ -17,11 +17,17 @@ jobs:
     environment: gcr-prod
 
     steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - run: gcloud config set verbosity verbose
+
     - id: auth
       name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v1
       with:
-        workload_identity_provider: projects/583396614925/locations/global/workloadIdentityPools/github-actions-identity-pool
+        workload_identity_provider: |
+          projects/583396614925/locations/global/workloadIdentityPools/github-actions-identity-pool
         service_account: github-actions-sa@datadog-sandbox-384117.iam.gserviceaccount.com
 
     - id: deploy
