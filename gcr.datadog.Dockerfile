@@ -31,9 +31,10 @@ RUN npm ci --only=production && npm cache clean --force
 USER node
 
 # production
-FROM node:18-alpine AS production
-COPY --from=datadog/serverless-init /datadog-init /app/datadog-init
+FROM node:lts-slim AS production
 
+RUN apt-get update && apt-get install -y ca-certificates
+COPY --chown=node:node --from=datadog/serverless-init /datadog-init /app/datadog-init
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 
