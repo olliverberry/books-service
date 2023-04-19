@@ -32,7 +32,7 @@ jobs:
         env_vars: |
           DD_ENV=${{ vars.DD_ENV }}
           DD_SERVICE=books-service
-          DD_VERSION=${{ env.GITHUB_SHA }}
+          DD_VERSION=${{ github.sha }}
           DD_API_KEY=${{ secrets.DD_API_KEY }}
           DD_TRACE_ENABLED=true
           DD_LOGS_ENABLED=true
