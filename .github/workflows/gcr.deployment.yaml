@@ -30,11 +30,10 @@ jobs:
         service: books-service
         image: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:gcr'
         env_vars: |
-          DD_ENV: ${{ vars.DD_ENV }}
-          DD_SERVICE: books-service
-          DD_VERSION: ${{ env.GITHUB_SHA }}
-          DD_API_KEY: ${{ secrets.DD_API_KEY }}
-          DD_TRACE_ENABLED: true
-          DD_LOGS_ENABLED: true
-          PORT: 3000
+          DD_ENV=${{ vars.DD_ENV }}
+          DD_SERVICE=books-service
+          DD_VERSION=${{ env.GITHUB_SHA }}
+          DD_API_KEY=${{ secrets.DD_API_KEY }}
+          DD_TRACE_ENABLED=true
+          DD_LOGS_ENABLED=true
           
