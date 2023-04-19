@@ -4,8 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  REGISTRY: gcr.io
 
 permissions:
   contents: 'read'
@@ -32,7 +31,7 @@ jobs:
       uses: google-github-actions/deploy-cloudrun@v1
       with:
         service: books-service
-        image: '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:gcr'
+        image: '${{ env.REGISTRY }}/datadog-sandbox-384117/books-service:gcr'
         env_vars: |
           DD_ENV=${{ vars.DD_ENV }}
           DD_SERVICE=books-service

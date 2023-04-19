@@ -8,7 +8,6 @@ on:
 
 env:
   REGISTRY: gcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
@@ -68,7 +67,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v4
       with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        images: ${{ env.REGISTRY }}/datadog-sandbox-384117/books-service
         tags: |
           type=sha
           type=sha,format=long
