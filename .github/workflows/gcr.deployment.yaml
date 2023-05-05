@@ -41,4 +41,5 @@ jobs:
           DD_LOGS_ENABLED=true
           DD_SOURCE=nodejs
           DD_LOGS_INJECTION=true
+          DD_APPSEC_ENABLED=true
           
